@@ -27,6 +27,7 @@ server:
   port: 8443
   ssl:
     bundle: web
-  # Step 5: Configure session cookie with SameSite attribute
-  # ...
-  # Step 5: End of session cookie configuration
+  servlet:
+    session:
+      cookie:
+        same-site: strict
