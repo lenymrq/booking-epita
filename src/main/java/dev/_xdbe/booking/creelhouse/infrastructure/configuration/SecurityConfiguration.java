@@ -21,20 +21,14 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
             .authorizeHttpRequests(auth -> auth
-                // Step 4a: add access control
-                // ...
-                // Step 4a: end
+                .requestMatchers("/dashboard/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
             )
-            // Step 4b: Add login form
-            // ...
-            // Step 4b: End of login form configuration
-            
+            .formLogin(withDefaults())
             .csrf((csrf) -> csrf
                 .ignoringRequestMatchers("/h2-console/**")
             )
@@ -46,8 +40,18 @@ public class SecurityConfiguration {
             .build();
     }
 
-    // Step 3: add InMemoryUserDetailsManager
-    // ...
-    // Step 3: end
-
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails administrator = User.builder()
+            .username("admin")
+            .password("{bcrypt}$2a$10$fxhAHkcPXD7kYSs5TL5ZJ.ff/wd2x3/GjW8RY3yMQaX5NLJ88yK9q")
+            .roles("ADMIN")
+            .build();
+        UserDetails guest = User.builder()
+            .username("guest")
+            .password("{bcrypt}$2a$10$S0LGRDTTRBp0PIPsvM5XLuFUW0WM/wlE/wZE1.uypBJwxlNRBy45.")
+            .roles("GUEST")
+            .build();
+        return new InMemoryUserDetailsManager(administrator, guest);
+    }
 }
