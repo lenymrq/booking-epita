@@ -14,10 +14,10 @@
 
 Tasks to solve this hands on:
 
-- [ ] Enable HTTPS
-- [ ] Fix CSRF issue
-- [ ] Add user
-- [ ] Access Control
-- [ ] Configure Cookie with same site attribute
-- [ ] Mask credit card number
-- [ ] Encrpt credit card number
+- [x] Enable HTTPS
+- [x] Fix CSRF issue
+- [x] Add user
+- [x] Access Control
+- [x] Configure Cookie with same site attribute
+- [x] Mask credit card number
+- [x] Encrpt credit card number
