@@ -31,4 +31,4 @@ jobs:
       - name: upload SARIF
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: DependenciesAnalysisFull.sarif
+          sarif_file: semgrep.sarif
