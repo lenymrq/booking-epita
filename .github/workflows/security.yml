@@ -1,6 +1,5 @@
 name: security
-on:
-  workflow_dispatch
+on: workflow_dispatch
 permissions:
   # Required to upload SARIF file to CodeQL.
   actions: read
@@ -8,3 +7,23 @@ permissions:
   security-events: write
   # to fetch code (actions/checkout)
   contents: read
+jobs:
+  osv-scanner:
+    steps:
+      - name: run osv-scanner
+        uses: google/osv-scanner-action/osv-scanner-action@c51854704019a247608d928f370c98740469d4b5
+        with:
+          scan-args: |-
+            --format sarif
+            --output DependenciesAnalysisFull.sarif
+            ./
+        continue-on-error: true
+  semgrep:
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep@sha256:326e5f41cc972bb423b764a14febbb62bbad29ee1c01820805d077dd868fea48
+    steps:
+      - uses: actions/checkout@v6
+      - run: semgrep ci
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
